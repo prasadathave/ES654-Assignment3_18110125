@@ -6,27 +6,33 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from autograd import grad
 
-from jax import grad
-def sigmoid_function(x):
-  return 1 / (1 + np.exp(-x))
-
+def sigmoid_function(value):
+    a = np.exp(-value)
+    return 1.0/ (1.0 + a)
 class logisticregression:
     def __init__(self,regularization="No"):
         self.regularization=regularization
         self.weights = []
 
     def fit(self,X,y,intercept_addition=True,n_iterations = 100,learning_rate = 0.01,use_jax=False):
+        print(X.shape)
+        print(y.shape)
         if(intercept_addition==True):
+            self.intercept_addition=True
             column = np.ones((X.shape[0],1))
             X = np.hstack((column,X))
         if(self.regularization=="No"):            
-            self.weights = np.zeros(X.shape[1])
+            self.weights = np.ones(X.shape[1])
             for i in range(n_iterations):
                 ### found the predictions for a step 
                 values = np.dot(X,self.weights)
+                # print(values)
                 predicted_vals = sigmoid_function(values)
-                error_val = y-predicted_vals
+                error_val = (y-predicted_vals)
+                
+                # break
                 if(use_jax==False):
                     ## calculating likelihood gradient 
                     gradient_displacement = np.dot(X.T,error_val)
@@ -37,15 +43,26 @@ class logisticregression:
 
     
     def predict(self,X):
+        if(self.intercept_addition==True):
+            column = np.ones((X.shape[0],1))
+            X = np.hstack((column,X))
         print("prediction started")
         print(self.weights.shape)
         print(X.shape)
-        a = np.dot(X.T,self.weights)
+        a = np.dot(X,self.weights)
         a[a>=0.5] = 1
         a[a<0.5] = 0
         print(a.shape)
         return a
 
+X,y = load_breast_cancer(return_X_y=True)
+sc = StandardScaler().fit(X)
+X = sc.transform(X)
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=0)
+lr = logisticregression(regularization="No")
+lr.fit(X_train,y_train,intercept_addition=True,n_iterations=1000,learning_rate=0.01,use_jax=False)
 
-
+prediction = lr.predict(X_test)
+print(y_train.shape)
+print((prediction==y_test).sum())
