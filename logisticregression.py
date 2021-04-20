@@ -33,10 +33,10 @@ def sigmoid_function(value):
 grad_sigmoid = elementwise_grad(sigmoid_function)
 
 class logisticregression:
-    def __init__(self,regularization="No"):
+    def __init__(self,regularization="No",lmbda = 0.1):
         self.regularization=regularization
         self.weights = []
-
+        self.lmbda = lmbda
     def fit(self,X,y,intercept_addition=True,n_iterations = 100,learning_rate = 0.01,use_autograd=False):
 
         def cost_function_normal(weights):
@@ -46,9 +46,9 @@ class logisticregression:
             ab = sigmoid_function1(ab)
             cost = np.sum(np.abs(y-ab)**2)
             return cost
-        def cost_function_L1(weights,lmbda=0.1):
+        def cost_function_L1(weights):
             # weights = np.array(weights)
-        
+            lmbda = self.lmbda 
             ab = anp.dot(X,weights)
             ab = anp.array(ab)
             ab = sigmoid_function1(ab)
@@ -56,9 +56,9 @@ class logisticregression:
             cost += lmbda*(np.sum(np.abs(weights)))
             return cost
         
-        def cost_function_L2(weights,lmbda=0.1):
+        def cost_function_L2(weights):
             # weights = np.array(weights)
-        
+            lmbda = self.lmbda 
             ab = anp.dot(X,weights)
             ab = anp.array(ab)
             ab = sigmoid_function1(ab)
@@ -174,3 +174,9 @@ print(acc/3)
 # with autograd = 97.54107490949598
 # with l1 = 97.54107490949598
 # with l2 = 97.54107490949598
+
+
+
+
+
+#### visualising lambda #### 
