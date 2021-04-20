@@ -139,6 +139,8 @@ class logisticregression:
         a[a<0.5] = 0
         # print(a.shape)
         return a
+    def plot():
+        pass
 
 
 #### importing the breast cancer dataset and transforming it
@@ -231,3 +233,4 @@ for i in a:
 print("max acc L2:",max_acc)
 print("max lambda",max_lambda)
 ######################################################
+############################################################
