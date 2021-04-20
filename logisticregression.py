@@ -17,10 +17,14 @@ def sigmoid_one_value(value):
     return 1.0/(1.0+a)
     
 
+def sigmoid_function1(value):
+   
+    a = anp.exp(-value)
+    return 1.0/ (1.0 + a)
+
+
 def sigmoid_function(value):
-    print(type(value))
-    value = np.array(value)
-    print(type(value))
+   
     a = np.exp(-value)
     return 1.0/ (1.0 + a)
 
@@ -34,7 +38,7 @@ class logisticregression:
         self.regularization=regularization
         self.weights = []
 
-    def fit(self,X,y,intercept_addition=True,n_iterations = 100,learning_rate = 0.01,use_jax=False):
+    def fit(self,X,y,intercept_addition=True,n_iterations = 100,learning_rate = 0.01,use_autograd=False):
         print(X.shape)
         print(y.shape)
         if(intercept_addition==True):
@@ -52,16 +56,16 @@ class logisticregression:
                 error_val = (y-predicted_vals)
                 
                 # break
-                if(use_jax==False):
+                if(use_autograd==False):
                     ## calculating likelihood gradient 
                     gradient_displacement = np.dot(X.T,error_val)
                     self.weights += learning_rate*gradient_displacement
                 else:
                     def cost_function(weights):
-                        weights = np.array(weights)
-                        ab = np.dot(X,weights)
-                        ab = np.array(ab)
-                        ab = sigmoid_function(ab)
+                        # weights = np.array(weights)
+                        ab = anp.dot(X,weights)
+                        ab = anp.array(ab)
+                        ab = sigmoid_function1(ab)
                         cost = np.sum(np.abs(y-ab)**2)
                         return cost
                     grad_cost = elementwise_grad(cost_function)
@@ -91,7 +95,7 @@ X = sc.transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=0)
 lr = logisticregression(regularization="No")
-lr.fit(X_train,y_train,intercept_addition=True,n_iterations=1000,learning_rate=0.01,use_jax=True)
+lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
 
 prediction = lr.predict(X_test)
 print(y_train.shape)
