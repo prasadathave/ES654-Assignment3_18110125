@@ -88,14 +88,14 @@ class logisticregression:
         return a
 
 
-
+#### importing the breast cancer dataset and transforming it
 X,y = load_breast_cancer(return_X_y=True)
 sc = StandardScaler().fit(X)
 X = sc.transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=0)
 lr = logisticregression(regularization="No")
-lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
+lr.fit(X_train,y_train,intercept_addition=True,n_iterations=1000,learning_rate=0.01,use_autograd=False)
 
 prediction = lr.predict(X_test)
 print(y_train.shape)
