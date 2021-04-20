@@ -155,6 +155,8 @@ X = sc.transform(X)
 # print(y_train.shape)
 # print((prediction==y_test).sum())
 
+
+###########k fold cross validation for various cases################
 kf = KFold(n_splits=3)
 acc =0
 for train, test in kf.split(X):
@@ -165,6 +167,10 @@ for train, test in kf.split(X):
     acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
     
 print(acc/3)
+###############################
+
 
 # without autograd = 95.95841455490579
 # with autograd = 97.54107490949598
+# with l1 = 97.54107490949598
+# with l2 = 97.54107490949598
