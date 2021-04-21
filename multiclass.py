@@ -100,21 +100,42 @@ X = sc.transform(X)
 
 ############# part 3 cross validation and confusion matrix ###############
 
-kf = KFold(n_splits=4)
-acc =0
-conf_avg = np.zeros([10,10])
-for train, test in kf.split(X):
-    X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
-    mk = multiclass(len(list(set(list(y)))))
-    mk.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01)
-    prediction = mk.predict(X_test)
-    acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
-    conf_matrix = confusion_matrix(y_test,prediction)
-    conf_avg+=conf_matrix
-    # print(conf_matrix)    
+# kf = KFold(n_splits=4)
+# acc =0
+# conf_avg = np.zeros([10,10])
+# for train, test in kf.split(X):
+#     X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
+#     mk = multiclass(len(list(set(list(y)))))
+#     mk.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01)
+#     prediction = mk.predict(X_test)
+#     acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
+#     conf_matrix = confusion_matrix(y_test,prediction)
+#     conf_avg+=conf_matrix
+#     # print(conf_matrix)    
     
-conf_avg = conf_avg/4
-print(conf_avg)
-print("Average accuracy:" ,acc/4)
+# conf_avg = conf_avg/4
+# print(conf_avg)
+# print("Average accuracy:" ,acc/4)
+
+
+# [[43.5   0.    0.    0.    0.    0.25  0.25  0.25  0.25  0.  ]
+#  [ 0.   41.25  0.5   0.5   0.25  0.25  0.25  0.    1.25  1.25]
+#  [ 0.5   0.25 43.    0.25  0.    0.    0.    0.    0.25  0.  ]
+#  [ 0.25  0.25  1.5  39.75  0.    0.75  0.    0.75  1.75  0.75]
+#  [ 0.    0.75  0.25  0.   42.    0.    0.25  0.5   0.5   1.  ]
+#  [ 0.25  0.5   0.25  0.    0.25 43.25  0.25  0.25  0.    0.5 ]
+#  [ 0.75  0.5   0.    0.    0.5   0.   43.5   0.    0.    0.  ]
+#  [ 0.    0.    0.    0.25  1.    0.    0.   42.75  0.5   0.25]
+#  [ 0.25  3.25  1.25  0.25  0.25  0.75  1.    0.   35.75  0.75]
+#  [ 0.75  2.25  0.25  1.    0.75  1.    0.    1.25  2.   35.75]]
+# Average accuracy: 91.3739173471913
+
 
 ##################################################
+
+
+
+
+################ part 4 PCA black box ###################
+
+################################################
