@@ -4,6 +4,7 @@ import autograd.numpy
 import matplotlib.pyplot as plt
 import matplotlib
 from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import load_digits
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from autograd import elementwise_grad
@@ -70,11 +71,23 @@ class multiclass:
 
 
 ###### checking multi class####
-X,y = load_breast_cancer(return_X_y=True)
+# X,y = load_breast_cancer(return_X_y=True)
+# sc = StandardScaler().fit(X)
+# X = sc.transform(X)
+digits = load_digits()
+data = digits.images
+n = len(data)
+
+X = data.reshape((n,-1))
+
+y = digits.target
+
 sc = StandardScaler().fit(X)
 X = sc.transform(X)
 
-mk = multiclass(2)
+
+mk = multiclass(len(list(set(list(y)))))
+# mk.fit(X,y)
 mk.fit(X,y)
 
 prediction = mk.predict(X)
