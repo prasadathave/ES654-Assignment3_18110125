@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix
 from autograd import elementwise_grad
 import autograd.numpy as anp
 from sklearn.model_selection import KFold
-
+from sklearn.decomposition import PCA
 from logisticregression import logisticregression
 
 
@@ -137,5 +137,25 @@ X = sc.transform(X)
 
 
 ################ part 4 PCA black box ###################
+print(X.shape)
+pca = PCA(n_components=2)
+X = pca.fit_transform(X)
+print(X.shape)
+print(y.shape)
+############ plotting ####################
+x1 = X[:,0:1]
+y1 = X[:,1:2]
+labels = y
+colors = ['red','green']
+plt.scatter(x1, y1, c=labels, cmap=matplotlib.colors.ListedColormap(colors))
+plt.show()
 
-################################################
+
+#########################################################
+
+
+################    Q4       ######################
+
+#### space complexity = O(number of parameters*number of samples)
+###### time complexity = O(number of steps * number of samples * dimension**2)
+#######################################
