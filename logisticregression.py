@@ -140,8 +140,6 @@ class logisticregression:
         a[a<0.5] = 0
         # print(a.shape)
         return a
-    def plot():
-        pass
 
 
 #### importing the breast cancer dataset and transforming it
@@ -180,65 +178,65 @@ X = sc.transform(X)
 
 
 ############## Q1 last part#############
-x1 = X[:,0:1]
-y1 = X[:,1:2]
-labels = y
-colors = ['red','green']
-plt.scatter(x1, y1, c=labels, cmap=matplotlib.colors.ListedColormap(colors))
-plt.show()
+# x1 = X[:,0:1]
+# y1 = X[:,1:2]
+# labels = y
+# colors = ['red','green']
+# plt.scatter(x1, y1, c=labels, cmap=matplotlib.colors.ListedColormap(colors))
+# plt.show()
 #####################################
 
 ########### Q2 part 2 ################
 #### visualising lambda for L1###############
-a = []
-val = 0
-for i in range(10000):
-    val +=0.1
-    a.append(val)
-max_acc = -1
-max_lambda = 0
-for i in a:
-    lmbda = i
-    acc =0
-    for train, test in kf.split(X):
-        X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
-        lr = logisticregression(regularization="L1",lmbda=lmbda)
-        lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
-        prediction = lr.predict(X_test)
-        acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100    
-    acc = acc/3
-    print(acc)
-    if(acc>max_acc):
-        max_lambda = lmbda
-print("max accuracy L1:",max_acc)
-print("max lambda L1:",max_acc)
+# a = []
+# val = 0
+# for i in range(10000):
+#     val +=0.1
+#     a.append(val)
+# max_acc = -1
+# max_lambda = 0
+# for i in a:
+#     lmbda = i
+#     acc =0
+#     for train, test in kf.split(X):
+#         X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
+#         lr = logisticregression(regularization="L1",lmbda=lmbda)
+#         lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
+#         prediction = lr.predict(X_test)
+#         acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100    
+#     acc = acc/3
+#     print(acc)
+#     if(acc>max_acc):
+#         max_lambda = lmbda
+# print("max accuracy L1:",max_acc)
+# print("max lambda L1:",max_acc)
 #######################################################################
     
 
 
 
 ################# max lmbda case for L2 ##############
-a = []
-val = 0
-for i in range(10000):
-    val +=0.1
-    a.append(val)
-max_acc = -1
-max_lambda = 0
-for i in a:
-    lmbda = i
-    acc =0
-    for train, test in kf.split(X):
-        X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
-        lr = logisticregression(regularization="L2",lmbda=lmbda)
-        lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
-        prediction = lr.predict(X_test)
-        acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100    
-    acc = acc/3
-    print(acc)
-    if(acc>max_acc):
-        max_lambda = lmbda
-print("max acc L2:",max_acc)
-print("max lambda",max_lambda)
+# a = []
+# val = 0
+# for i in range(10000):
+#     val +=0.1
+#     a.append(val)
+# max_acc = -1
+# max_lambda = 0
+# for i in a:
+#     lmbda = i
+#     acc =0
+#     for train, test in kf.split(X):
+#         X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
+#         lr = logisticregression(regularization="L2",lmbda=lmbda)
+#         lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01,use_autograd=True)
+#         prediction = lr.predict(X_test)
+#         acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100    
+#     acc = acc/3
+#     print(acc)
+#     if(acc>max_acc):
+#         max_lambda = lmbda
+# print("max acc L2:",max_acc)
+# print("max lambda",max_lambda)
 ######################################################
 ############################################################
