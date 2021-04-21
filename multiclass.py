@@ -7,6 +7,7 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.datasets import load_digits
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from autograd import elementwise_grad
 import autograd.numpy as anp
 from sklearn.model_selection import KFold
@@ -85,11 +86,35 @@ y = digits.target
 sc = StandardScaler().fit(X)
 X = sc.transform(X)
 
-
-mk = multiclass(len(list(set(list(y)))))
+############ first and second part ###############
+# mk = multiclass(len(list(set(list(y)))))
 # mk.fit(X,y)
-mk.fit(X,y)
+# mk.fit(X,y)
 
-prediction = mk.predict(X)
+# prediction = mk.predict(X)
 
-print(((prediction==y).sum()/y.shape[0])*100)
+# print(((prediction==y).sum()/y.shape[0])*100)
+###########################################
+
+
+
+############# part 3 cross validation and confusion matrix ###############
+
+kf = KFold(n_splits=4)
+acc =0
+conf_avg = np.zeros([10,10])
+for train, test in kf.split(X):
+    X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
+    mk = multiclass(len(list(set(list(y)))))
+    mk.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.01)
+    prediction = mk.predict(X_test)
+    acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
+    conf_matrix = confusion_matrix(y_test,prediction)
+    conf_avg+=conf_matrix
+    # print(conf_matrix)    
+    
+conf_avg = conf_avg/4
+print(conf_avg)
+print("Average accuracy:" ,acc/4)
+
+##################################################
