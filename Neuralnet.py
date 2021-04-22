@@ -25,7 +25,7 @@ import autograd.numpy as np
 from jax import grad,jit,vmap
 from autograd import elementwise_grad,grad
 # inherit from base class Layer
-class FCLayer:
+class FullyConnectedLayer:
     # input_size = number of input neurons
     # output_size = number of output neurons
     def __init__(self, input_size, output_size,input1=None,output1=None):
@@ -35,13 +35,13 @@ class FCLayer:
         self.bias = np.ones([1,output_size]) - 0.5
 
     # returns output for a given input
-    def forward_propagation(self, input_data):
+    def propagate_forward(self, input_data):
         self.input = input_data
         self.output = np.dot(self.input, self.weights) + self.bias
         return self.output
 
     # computes dE/dW, dE/dB for a given output_error=dE/dY. Returns input_error=dE/dX.
-    def backward_propagation(self, output_error, learning_rate):
+    def propagate_backward(self, output_error, learning_rate):
         # print(self.weights)
         input_error = np.dot(output_error, self.weights.T)
         weights_error = np.dot(self.input.T, output_error)
@@ -64,14 +64,14 @@ class ActivationLayer:
         self.activation_prime = elementwise_grad(activation)
 
     # returns the activated input
-    def forward_propagation(self, input_data):
+    def propagate_forward(self, input_data):
         self.input = input_data
         self.output = self.activation(self.input)
         return self.output
 
     # Returns input_error=dE/dX for a given output_error=dE/dY.
     # learning_rate is not used because there is no "learnable" parameters.
-    def backward_propagation(self, output_error, learning_rate):
+    def propagate_backward(self, output_error, learning_rate):
         return self.activation_prime(self.input) * output_error
 
 
@@ -96,7 +96,7 @@ class Network:
         self.loss_prime = None
 
     # add layer to network
-    def add(self, layer):
+    def add_layer(self, layer):
         self.layers.append(layer)
 
     # set loss to use
@@ -108,17 +108,17 @@ class Network:
     def predict(self, input_data):
         # sample dimension first
         samples = len(input_data)
-        result = []
+        predictions = []
 
         # run network over all samples
         for i in range(samples):
             # forward propagation
             output = input_data[i]
-            for layer in self.layers:
-                output = layer.forward_propagation(output)
-            result.append(output)
+            for i in range(len(self.layers)):
+                output = self.layers[i].propagate_forward(output)
+            predictions.append(output)
 
-        return result
+        return predictions
 
     # train the network
     def fit(self, x_train, y_train, epochs, learning_rate):
@@ -132,7 +132,7 @@ class Network:
                 # forward propagation
                 output = x_train[j]
                 for layer in self.layers:
-                    output = layer.forward_propagation(output)
+                    output = layer.propagate_forward(output)
 
                 # compute loss (for display purpose only)
                 err += self.loss(y_train[j], output)
@@ -141,8 +141,8 @@ class Network:
                 error = -self.loss_prime(y_train[j], output)
                 # print(mse_prime(y_train[j],output))
                 # print(mse_prime1(y_train[j],output))
-                for layer in reversed(self.layers):
-                    error = layer.backward_propagation(error, learning_rate)
+                for p in range(len(self.layers)-1,-1,-1):
+                    error = self.layers[p].propagate_backward(error, learning_rate)
                     
 
             # calculate average error on all samples
@@ -157,15 +157,14 @@ y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 
 # network
 net = Network()
-net.add(FCLayer(2, 3))
-net.add(ActivationLayer(relu))
-net.add(FCLayer(3, 1))
-net.add(ActivationLayer(relu))
+net.add_layer(FullyConnectedLayer(2, 3))
+net.add_layer(ActivationLayer(relu))
+net.add_layer(FullyConnectedLayer(3, 1))
+net.add_layer(ActivationLayer(relu))
 
-# train
+
 net.use(mse)
 net.fit(x_train, y_train, epochs=1000, learning_rate=0.1)
 
-# test
+
 out = net.predict(x_train)
-# print(out)
