@@ -31,8 +31,8 @@ class FCLayer:
     def __init__(self, input_size, output_size,input1=None,output1=None):
         self.input = input1
         self.output = output1
-        self.weights = np.ones([input_size, output_size]) - 0.5
-        self.bias = np.ones([1, output_size]) - 0.5
+        self.weights = np.ones([input_size,output_size]) - 0.5
+        self.bias = np.ones([1,output_size]) - 0.5
 
     # returns output for a given input
     def forward_propagation(self, input_data):
@@ -42,6 +42,7 @@ class FCLayer:
 
     # computes dE/dW, dE/dB for a given output_error=dE/dY. Returns input_error=dE/dX.
     def backward_propagation(self, output_error, learning_rate):
+        # print(self.weights)
         input_error = np.dot(output_error, self.weights.T)
         weights_error = np.dot(self.input.T, output_error)
         # dBias = output_error
@@ -56,11 +57,11 @@ class FCLayer:
 
 
 class ActivationLayer:
-    def __init__(self, activation, activation_prime,input1=None,output1=None):
+    def __init__(self, activation,input1=None,output1=None):
         self.input = input1
         self.output = output1
         self.activation = activation
-        self.activation_prime = activation_prime
+        self.activation_prime = elementwise_grad(activation)
 
     # returns the activated input
     def forward_propagation(self, input_data):
@@ -79,21 +80,13 @@ class ActivationLayer:
 # activation function and its derivative
 def tanh(x):
     return np.tanh(x)
-
-# def tanh_prime(x):
-#     return 1-np.tanh(x)**2
-
-tanh_prime = elementwise_grad(tanh)
+def sigmoid(x):
+    return 1.0/(1.0+np.exp(-x))
+def relu(x):
+    return 0.1*(abs(x)+x)/2
 
 def mse(y_true,y_pred):
     return np.mean(np.power(y_pred-y_true, 2))
-
-def mse_prime1(y_true, y_pred):
-    return 2*(y_pred-y_true)/y_true.size
-
-
-mse_prime = elementwise_grad(mse)
-# mse_prime = 
 
 
 class Network:
@@ -107,9 +100,9 @@ class Network:
         self.layers.append(layer)
 
     # set loss to use
-    def use(self, loss, loss_prime):
+    def use(self, loss):
         self.loss = loss
-        self.loss_prime = loss_prime
+        self.loss_prime = elementwise_grad(loss)
 
     # predict output for given input
     def predict(self, input_data):
@@ -150,9 +143,11 @@ class Network:
                 # print(mse_prime1(y_train[j],output))
                 for layer in reversed(self.layers):
                     error = layer.backward_propagation(error, learning_rate)
+                    
 
             # calculate average error on all samples
             err /= samples
+            
             print('epoch %d/%d   error=%f' % (i+1, epochs, err))
 
 
@@ -163,14 +158,14 @@ y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 # network
 net = Network()
 net.add(FCLayer(2, 3))
-net.add(ActivationLayer(tanh, tanh_prime))
+net.add(ActivationLayer(relu))
 net.add(FCLayer(3, 1))
-net.add(ActivationLayer(tanh, tanh_prime))
+net.add(ActivationLayer(relu))
 
 # train
-net.use(mse, mse_prime)
+net.use(mse)
 net.fit(x_train, y_train, epochs=1000, learning_rate=0.1)
 
 # test
 out = net.predict(x_train)
-print(out)
+# print(out)
