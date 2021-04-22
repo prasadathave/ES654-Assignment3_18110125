@@ -174,49 +174,6 @@ class neuralnet():
 # out = net.predict(X_train)
 
 
-
-
-
-
-##############################boston dataset###############################################
-
-X,y = load_boston(return_X_y=True)
-
-X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
-
-X_train = np.array(X_train,dtype=int)
-y_train = np.array(y_train,dtype=int)
-X_train =X_train.reshape((X_train.shape[0],1,X_train.shape[1]))
-X_train = X_train.astype('float32')
-y_train = y_train.reshape((y_train.shape[0],1,1))
-y_train = np_utils.to_categorical(y_train)
-
-# print(y_train)
-
-
-net = neuralnet()
-net.add_layer(fullconnectedlayer(13, 10))               
-net.add_layer(Alayer(tanh))
-
-net.add_layer(fullconnectedlayer(10, 8))                   
-net.add_layer(Alayer(relu))
-
-
-net.add_layer(fullconnectedlayer(8, 1))                   
-net.add_layer(Alayer(sigmoid))
-
-
-net.select_loss_function(mse)
-net.fit(X_train,y_train,number_of_epochs=10,learning_rate=0.9)
-out = net.predict(X_train)
-
-#######################################################################
-
-
-
-
-print(y_train)
-print(out)
 # print("predicted values : ")
 # Y = []
 # for i in out:
@@ -241,6 +198,51 @@ print(out)
 #     return (num/len(y_hat))
 
 # print(accuracy(yhat,Y))
+
+
+
+
+
+
+
+##############################boston dataset###############################################
+
+# X,y = load_boston(return_X_y=True)
+
+# X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
+
+# X_train = np.array(X_train,dtype=int)
+# y_train = np.array(y_train,dtype=int)
+# X_train =X_train.reshape((X_train.shape[0],1,X_train.shape[1]))
+# X_train = X_train.astype('float32')
+# y_train = y_train.reshape((y_train.shape[0],1,1))
+# y_train = np_utils.to_categorical(y_train)
+
+# # print(y_train)
+
+
+# net = neuralnet()
+# net.add_layer(fullconnectedlayer(13, 10))               
+# net.add_layer(Alayer(tanh))
+
+# net.add_layer(fullconnectedlayer(10, 8))                   
+# net.add_layer(Alayer(relu))
+
+
+# net.add_layer(fullconnectedlayer(8, 1))                   
+# net.add_layer(Alayer(sigmoid))
+
+
+# net.select_loss_function(mse)
+# net.fit(X_train,y_train,number_of_epochs=10,learning_rate=0.9)
+# out = net.predict(X_train)
+
+# print(y_train)
+# print(out)
+#######################################################################
+
+
+
 
 
 # epoch 100/100   error=0.016703
