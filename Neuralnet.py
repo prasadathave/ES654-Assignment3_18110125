@@ -20,30 +20,19 @@
 #         self.weights = weights
 
 
-# Base class
-class Layer:
-    def __init__(self):
-        self.input = None
-        self.output = None
 
-    # computes the output Y of a layer for a given input X
-    def forward_propagation(self, input):
-        raise NotImplementedError
-
-    # computes dE/dX for a given dE/dY (and update parameters if any)
-    def backward_propagation(self, output_error, learning_rate):
-        raise NotImplementedError
-
-
-import numpy as np
-
+import autograd.numpy as np
+from jax import grad,jit,vmap
+from autograd import elementwise_grad,grad
 # inherit from base class Layer
-class FCLayer(Layer):
+class FCLayer:
     # input_size = number of input neurons
     # output_size = number of output neurons
-    def __init__(self, input_size, output_size):
-        self.weights = np.random.rand(input_size, output_size) - 0.5
-        self.bias = np.random.rand(1, output_size) - 0.5
+    def __init__(self, input_size, output_size,input1=None,output1=None):
+        self.input = input1
+        self.output = output1
+        self.weights = np.ones([input_size, output_size]) - 0.5
+        self.bias = np.ones([1, output_size]) - 0.5
 
     # returns output for a given input
     def forward_propagation(self, input_data):
@@ -66,8 +55,10 @@ class FCLayer(Layer):
 
 
 
-class ActivationLayer(Layer):
-    def __init__(self, activation, activation_prime):
+class ActivationLayer:
+    def __init__(self, activation, activation_prime,input1=None,output1=None):
+        self.input = input1
+        self.output = output1
         self.activation = activation
         self.activation_prime = activation_prime
 
@@ -89,18 +80,20 @@ class ActivationLayer(Layer):
 def tanh(x):
     return np.tanh(x)
 
-def tanh_prime(x):
-    return 1-np.tanh(x)**2
+# def tanh_prime(x):
+#     return 1-np.tanh(x)**2
 
+tanh_prime = elementwise_grad(tanh)
 
+def mse(y_true,y_pred):
+    return np.mean(np.power(y_pred-y_true, 2))
 
-def mse(y_true, y_pred):
-    return np.mean(np.power(y_true-y_pred, 2))
-
-def mse_prime(y_true, y_pred):
+def mse_prime1(y_true, y_pred):
     return 2*(y_pred-y_true)/y_true.size
 
 
+mse_prime = elementwise_grad(mse)
+# mse_prime = 
 
 
 class Network:
@@ -152,7 +145,9 @@ class Network:
                 err += self.loss(y_train[j], output)
 
                 # backward propagation
-                error = self.loss_prime(y_train[j], output)
+                error = -self.loss_prime(y_train[j], output)
+                # print(mse_prime(y_train[j],output))
+                # print(mse_prime1(y_train[j],output))
                 for layer in reversed(self.layers):
                     error = layer.backward_propagation(error, learning_rate)
 
