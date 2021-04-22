@@ -113,42 +113,41 @@ class Network:
         # run network over all samples
         for i in range(samples):
             # forward propagation
-            output = input_data[i]
+            val = input_data[i]
             for i in range(len(self.layers)):
-                output = self.layers[i].propagate_forward(output)
-            predictions.append(output)
+                val = self.layers[i].propagate_forward(val)
+            predictions.append(val)
 
         return predictions
 
     # train the network
-    def fit(self, x_train, y_train, epochs, learning_rate):
+    def fit(self, x_train, y_train, no_of_epochs, learning_rate=0.01):
         # sample dimension first
-        samples = len(x_train)
+        number_of_samples = len(x_train)
 
         # training loop
-        for i in range(epochs):
+        for i in range(no_of_epochs):
             err = 0
-            for j in range(samples):
+            for j in range(number_of_samples):
                 # forward propagation
-                output = x_train[j]
+                val = x_train[j]
                 for layer in self.layers:
-                    output = layer.propagate_forward(output)
+                    val = layer.propagate_forward(val)
 
-                # compute loss (for display purpose only)
-                err += self.loss(y_train[j], output)
+                
+                err += self.loss(y_train[j], val)
 
                 # backward propagation
-                error = -self.loss_prime(y_train[j], output)
-                # print(mse_prime(y_train[j],output))
-                # print(mse_prime1(y_train[j],output))
+                dj_by_dz = -self.loss_prime(y_train[j], val)
+               
                 for p in range(len(self.layers)-1,-1,-1):
-                    error = self.layers[p].propagate_backward(error, learning_rate)
+                    dj_by_dz = self.layers[p].propagate_backward(dj_by_dz, learning_rate)
                     
 
             # calculate average error on all samples
-            err /= samples
+            err /= number_of_samples
             
-            print('epoch %d/%d   error=%f' % (i+1, epochs, err))
+            print('epoch %d/%d   error=%f' % (i+1, no_of_epochs, err))
 
 
 
@@ -164,7 +163,7 @@ net.add_layer(ActivationLayer(relu))
 
 
 net.use(mse)
-net.fit(x_train, y_train, epochs=1000, learning_rate=0.1)
+net.fit(x_train, y_train, no_of_epochs=1000, learning_rate=0.1)
 
 
 out = net.predict(x_train)
