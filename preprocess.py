@@ -132,6 +132,56 @@ def run_test_harness():
 	print('> %.3f' % (acc * 100.0))
 	# learning curves
 	summarize_diagnostics(history)
+
  
 # entry point, run the test harness
 run_test_harness()
+
+
+
+
+# 2021-04-23 16:47:42.419855: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+# 2021-04-23 16:47:42.419896: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+# 2021-04-23 16:47:44.319060: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+# 2021-04-23 16:47:44.329094: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+# 2021-04-23 16:47:44.329181: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+# 2021-04-23 16:47:44.329251: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (prasad): /proc/driver/nvidia/version does not exist
+# 2021-04-23 16:47:44.330083: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+# To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+# 2021-04-23 16:47:44.332183: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+# Downloading data from https://storage.googleapis.com/tensorflow/keras-applications/vgg16/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
+# 58892288/58889256 [==============================] - 93s 2us/step
+# Found 58 images belonging to 2 classes.
+# Found 22 images belonging to 2 classes.
+# /home/prasad/.local/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:1844: UserWarning: `Model.fit_generator` is deprecated and will be removed in a future version. Please use `Model.fit`, which supports generators.
+#   warnings.warn('`Model.fit_generator` is deprecated and '
+# 2021-04-23 16:49:20.610835: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+# 2021-04-23 16:49:20.660663: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 1800000000 Hz
+# Epoch 1/10
+# 2021-04-23 16:49:22.157898: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 745013248 exceeds 10% of free system memory.
+# 2021-04-23 16:49:22.665515: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 745013248 exceeds 10% of free system memory.
+# 2021-04-23 16:49:28.570423: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 186253312 exceeds 10% of free system memory.
+# 2021-04-23 16:49:28.956021: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 372506624 exceeds 10% of free system memory.
+# 2021-04-23 16:49:29.421089: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 372506624 exceeds 10% of free system memory.
+# 1/1 [==============================] - 22s 22s/step - loss: 4.8013 - accuracy: 0.6034 - val_loss: 8.9808 - val_accuracy: 0.5455
+# Epoch 2/10
+# 1/1 [==============================] - 14s 14s/step - loss: 8.4948 - accuracy: 0.5862 - val_loss: 7.9074e-12 - val_accuracy: 1.0000
+# Epoch 3/10
+# 1/1 [==============================] - 17s 17s/step - loss: 1.2689e-05 - accuracy: 1.0000 - val_loss: 0.1978 - val_accuracy: 0.9545
+# Epoch 4/10
+# 1/1 [==============================] - 18s 18s/step - loss: 0.0019 - accuracy: 1.0000 - val_loss: 3.0736 - val_accuracy: 0.8636
+# Epoch 5/10
+# 1/1 [==============================] - 18s 18s/step - loss: 0.4620 - accuracy: 0.9828 - val_loss: 5.9451 - val_accuracy: 0.8182
+# Epoch 6/10
+# 1/1 [==============================] - 21s 21s/step - loss: 0.2193 - accuracy: 0.9828 - val_loss: 7.2778 - val_accuracy: 0.8182
+# Epoch 7/10
+# 1/1 [==============================] - 20s 20s/step - loss: 2.6228e-08 - accuracy: 1.0000 - val_loss: 8.4450 - val_accuracy: 0.8182
+# Epoch 8/10
+# 1/1 [==============================] - 19s 19s/step - loss: 3.3127e-08 - accuracy: 1.0000 - val_loss: 9.4671 - val_accuracy: 0.8182
+# Epoch 9/10
+# 1/1 [==============================] - 18s 18s/step - loss: 4.4000e-08 - accuracy: 1.0000 - val_loss: 10.3545 - val_accuracy: 0.8182
+# Epoch 10/10
+# 1/1 [==============================] - 20s 20s/step - loss: 6.8042e-08 - accuracy: 1.0000 - val_loss: 11.0988 - val_accuracy: 0.8182
+# /home/prasad/.local/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:1877: UserWarning: `Model.evaluate_generator` is deprecated and will be removed in a future version. Please use `Model.evaluate`, which supports generators.
+#   warnings.warn('`Model.evaluate_generator` is deprecated and '
+# > 81.818
