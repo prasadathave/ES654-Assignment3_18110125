@@ -164,16 +164,16 @@ X = sc.transform(X)
 # X = sc.fit_transform(X)
 
 
-kf = KFold(n_splits=3)
-acc =0
-for train, test in kf.split(X):
-    X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
-    lr = logisticregression(regularization="No")
-    lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.1)
-    prediction = lr.predict(X_test)
-    acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
+# kf = KFold(n_splits=3)
+# acc =0
+# for train, test in kf.split(X):
+#     X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
+#     lr = logisticregression(regularization="No")
+#     lr.fit(X_train,y_train,intercept_addition=True,n_iterations=100,learning_rate=0.1)
+#     prediction = lr.predict(X_test)
+#     acc += ((prediction==y_test).sum()/(y_test.shape[0]))*100
     
-print(acc/3)
+# print(acc/3)
 ###############################
 
 
@@ -204,6 +204,7 @@ print(acc/3)
 # for i in a:
 #     lmbda = i
 #     acc =0
+#     kf = KFold(n_splits=3)
 #     for train, test in kf.split(X):
 #         X_train,y_train,X_test,y_test = X[train],y[train],X[test],y[test]
 #         lr = logisticregression(regularization="L1",lmbda=lmbda)
@@ -216,6 +217,7 @@ print(acc/3)
 #         max_lambda = lmbda
 # print("max accuracy L1:",max_acc)
 # print("max lambda L1:",max_acc)
+#0.1 is the best one
 #######################################################################
     
 
