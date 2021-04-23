@@ -157,5 +157,5 @@ plt.show()
 ################    Q4       ######################
 
 #### space complexity = O(number of parameters*number of samples)
-###### time complexity = O(number of steps * number of samples * dimension**2)
+###### training time complexity = O(number of samples * number_of_parameters)
 #######################################
